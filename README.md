@@ -1,8 +1,16 @@
 # R-Projects
-Compilation of R programming codes
+This folder is a compilation of R programming code projects. 
 
-### Capstone-Group:
-A group project done for the Master's in Data Science program at Merrimack College. 
+## Capstone-Group: 
+### Social Determinants of Health Impact on Quality of Life in U.S. Counties: A Predictive Analysis
+
+#### Description:
+This group project uses predictive modeling techniques to investigate how Social Determinants of Health (SDOH) influence the quality of life across U.S. counties. The analysis utilizes data from the Agency for Healthcare Research and Quality (AHRQ) and County Health Rankings (CHR) to predict self-reported health outcomes. 
+- Roles: Collaboratively contributed to data cleaning, feature engineering, model development, and result analysis.
+- Tools Used: R, xgboost, glmnet, caret, and other R packages for machine learning.
+
+
+
 
 
 
