@@ -1,0 +1,87 @@
+---
+title: "Video Game Sales Codebook"
+author: "Miranda Gemme-Ellis"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r reading csv}
+setwd("~/Desktop")
+vgsales <- read.csv("vgsales.csv")
+```
+
+```{r library}
+library(codebookr)
+library(dplyr)
+```
+
+```{r N/A for Year variable}
+vgsales$Year[vgsales$Year == "N/A"] <- NA
+vgsales$Year <- as.numeric(vgsales$Year)
+sum(is.na(vgsales$Year))
+vgsales <- na.omit(vgsales)
+```
+
+```{r as.factor}
+vgsales$Name <- as.factor(vgsales$Name)
+vgsales$Publisher <- as.factor(vgsales$Publisher)
+vgsales$Platform <- as.factor(vgsales$Platform)
+vgsales$Genre <- as.factor(vgsales$Genre)
+```
+
+```{r added proportions}
+vgsales$NA_Sales_Prop <- vgsales$NA_Sales / vgsales$Global_Sales
+vgsales$EU_Sales_Prop <- vgsales$EU_Sales / vgsales$Global_Sales
+vgsales$JP_Sales_Prop <- vgsales$JP_Sales / vgsales$Global_Sales
+vgsales$Other_Sales_Prop <- vgsales$Other_Sales / vgsales$Global_Sales
+vgsales$Decade <- cut(vgsales$Year, 
+                      breaks = c(1979, 1990, 2000, 2010, 2020), 
+                      labels = c("1980s", "1990s", "2000s", "2010s"))
+```
+
+```{r}
+vg_codebook <- vgsales %>%
+  cb_add_col_attributes(
+    Rank, description = "Ranking of overall sales", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+    Name, description = "The video games name", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+    Platform, description = "Platform of the video games release (i.e. PC,PS4, etc.)", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+    Year, description = "Year of video game's release", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+    Genre, description = "Genre of video game", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+    Publisher, description = "Publisher of video game", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+    NA_Sales, description = "Sales in North America (millions)", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+    EU_Sales, description = "Sales in Europe (millions)", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+    JP_Sales, description = "Sales in Japan (millions)", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+    Other_Sales, description = "Sales in the rest of the world (millions)", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+    Global_Sales, description = "Total worldwide sales", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+   NA_Sales_Prop, description = "The proportion of a game's total global sales that were made in North America.", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+   EU_Sales_Prop, description = "The proportion of a game's total global sales that were made in Europe.", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+   JP_Sales_Prop, description = "The proportion of a game's total global sales that were made in Japan.", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+   Other_Sales_Prop, description = "The proportion of a game's total global sales that were made in other regions.", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+   Other_Sales_Prop, description = "The proportion of a game's total global sales that were made in other regions.", source = "Video Game Sales") %>%
+  cb_add_col_attributes(
+   Decade, description = "Categorizes the release year of each game into decade-based time periods.", source = "Video Game Sales")
+```
+
+```{r printing codebook}
+
+print(x = codebook(vg_codebook, 
+                   title = "Video Game Sales Analysis Codebook",
+  subtitle = "By: Miranda Gemme-Ellis",
+  description = "The objective of this project is to analyze video game sales worldwide, focusing on factors such as genre, game ranking, publisher, platform, and regional sales (including North America, Japan, and other regions). The goal is to analyze gaming industry trends, assess video games' performance across different localities, and understand the influence of different platforms and publishers on sales. Analyzing this data can help stakeholders, such as publishers and developers, to strategize marketing more effectively."
+), target = "vgCodebook_v1.docx")
+```
